@@ -19,8 +19,8 @@ export const createCategory = async (req: Request<any, any, CategoryCreateDto>, 
     const category = await prisma.category.create({
       data: {
         name,
-        userId: req.user.id,
         images: JSON.stringify(imagesPaths),
+ 
       },
     });
 

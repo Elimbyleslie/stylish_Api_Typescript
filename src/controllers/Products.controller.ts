@@ -16,7 +16,6 @@ export const createProduct = async (req: Request<any, any, ProductCreateDto>, re
     const product = await prisma.product.create({
       data: {
         name,
-        userId: req.user.id,
         categoryId,
         description,
         price,

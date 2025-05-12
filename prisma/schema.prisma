@@ -33,8 +33,6 @@ model User {
   updatedAt      DateTime  @updatedAt
 
   roles      UsersOnRoles[]
-  categories Category[]
-  products    Product[]
   paiements    Paiement[]
 }
 
@@ -83,12 +81,10 @@ model PermissionsOnRoles {
 model Category {
   id          String   @id @default(uuid())
   name        String   @unique
-  userId      String
   images      Json
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   products  Product[]
-  user   User     @relation(fields: [userId], references: [id])
 
 }
 
@@ -97,14 +93,12 @@ model Product {
   name        String   @unique
   description String?
   categoryId  String
-  userId      String
   price       Int 
   images      Json
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   paiements    Paiement[]
   category Category @relation(fields: [categoryId], references: [id])
-  user     User     @relation(fields: [userId], references: [id])
 }
 
 model Paiement {
