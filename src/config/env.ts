@@ -1,5 +1,7 @@
 import dotenv from 'dotenv';
 import path from 'path';
+import ms from 'ms';
+import { min } from 'date-fns/min';
 
 dotenv.config({
   path: path.resolve('./.env'),
@@ -21,13 +23,14 @@ const env = {
   mailSecure: process.env.MAIL_SECURE || false,
   accessTokenSecretKey: process.env.JWT_SECRET || '',
   refreshTokenSecretKey: process.env.REFRESH_JWT_SECRET || '',
-  accessTokenSecretKeyExpireIn: process.env.JWT_SECRET_EXPIRE_IN ? +process.env.JWT_SECRET_EXPIRE_IN : 15 * 60,
+  accessTokenSecretKeyExpireIn: process.env.JWT_SECRET_EXPIRE_IN
+    ? ms("15min") / 1000 // Convert to seconds
+    : 15 * 60,
   refreshTokenSecretKeyExpireIn: process.env.REFRESH_JWT_SECRET_EXPIRE_IN
-    ? +process.env.REFRESH_JWT_SECRET_EXPIRE_IN
-    : 7 * 24 * 3600, //'7d'
-  allowOrigins: process.env.ALL_ORIGINS?.split(',') || [`http://127.0.0.1:3000`],
+    ? ms("7d") / 1000 // Convert to seconds
+    : 7 * 24 * 3600, // Default to 7 days
+  allowOrigins: process.env.ALL_ORIGINS?.split(',') || [`http://127.0.0.1:5000`],
 };
-
 
 if (!env.port) {
   throw new Error('Missing required environment variable: PORT');
@@ -52,4 +55,5 @@ if (!env.accessTokenSecretKeyExpireIn) {
 if (!env.refreshTokenSecretKeyExpireIn) {
   throw new Error('Missing required environment variable: REFRESH_JWT_SECRET_EXPIRE_IN');
 }
+
 export default env;

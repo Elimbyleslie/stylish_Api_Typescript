@@ -10,7 +10,7 @@ import Utils from '../helpers/utils.js';
 import { ApiErrorResponse, ApiResponse } from '../types/index.js';
 import { CreateUserDto, LoginUser } from '../dto/user.dto.js';
 import { NextFunction, Request, Response } from 'express';
-
+import { UserRole } from '../dto/role.permission.dto.js';
 export class AuthUser {
   static register = async (
     req: Request<any, any, CreateUserDto>,
@@ -236,11 +236,12 @@ export class AuthUser {
       user.otp = null;
 
       // Extract role names and their associated permissions
-      const roles = user.roles.map((userRole) => {
+     
+      const roles = user.roles.map((userRole: UserRole) => {
         return userRole.role.name;
       });
 
-      const permissions = user.roles.map((userRole) => {
+      const permissions = user.roles.map((userRole:UserRole) => {
         {
           return userRole.role.permissions.map((rolePermission) => {
             return rolePermission.permission.name;
